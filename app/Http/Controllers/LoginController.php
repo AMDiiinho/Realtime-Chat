@@ -17,5 +17,13 @@ class LoginController extends Controller
 
         return view('register');
     }
+
+    public function auth(Request $request) {
+
+        if (Auth::attempt($request->only('username', 'password'))) {
+
+            return redirect()->intended('home');
+        }
+    }
     
 }

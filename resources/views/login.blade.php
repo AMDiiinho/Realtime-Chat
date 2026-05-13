@@ -13,10 +13,13 @@
 
     <div class="login-form">
 
-        <form action="route{{ '/login.auth' }}" method="POST">
+        <form action="{{ route('login.auth') }}" method="POST">
 
-            <label for="user">Login</label>
-            <input type="text" name="user" placeholder="Type your username">
+            @csrf
+
+            <label for="username">Username</label>
+            <input type="text" name="username" placeholder="Type your username">
+
             <label for="password">Password</label>
             <input type="password" name="password" placeholder="Type your password">
 
