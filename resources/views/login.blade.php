@@ -13,16 +13,18 @@
 
     <div class="login-form">
 
-        <form action="route{{ '/login' }}" method="POST">
+        <form action="route{{ '/login.auth' }}" method="POST">
 
-            <input type="text" name="user" placeholder="login">
-            <input type="password" name="password" placeholder="password">
+            <label for="user">Login</label>
+            <input type="text" name="user" placeholder="Type your username">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Type your password">
 
-            <button type="submit">Entrar</button>
+            <button type="submit">Sign in</button>
         </form>
     
     </div>
-    
-    <button>Cadastrar</button>
+
+    <a href="/register">Register</a>
 </body>
 </html>
