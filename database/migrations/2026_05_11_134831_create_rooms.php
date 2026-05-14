@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->enum('type', ['public','private']);
-            $table->integer('owner_id');
+            $table->string('password')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->timestamp('updated_at');
             $table->timestamp('created_at');
         });
     }

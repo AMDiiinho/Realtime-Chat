@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
 
-    protected $fillale = [
+    protected $fillable = [
         'name',
         'slug',
-        'type'
+        'type',
+        'password',
+        'owner_id'
     ];
 
     protected function casts(): array

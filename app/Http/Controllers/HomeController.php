@@ -8,6 +8,8 @@ class HomeController extends Controller
 {
     public function home_view(){
 
-        return view('home');
+        $rooms = auth()->user()->rooms()->latest()->get();
+
+        return view('home', compact('rooms'));
     }
 }

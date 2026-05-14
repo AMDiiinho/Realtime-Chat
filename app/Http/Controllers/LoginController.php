@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login_view(Request $request){
+    public function index(Request $request){
 
         return view('login');
     }
     
-    public function register_view(){
+    public function register_index(){
 
         return view('register');
     }
