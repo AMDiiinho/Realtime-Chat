@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class RoomController extends Controller
 {
-    public function create (Request $request) {
+    public function store (Request $request) {
 
         $room = Room::create ([
 
@@ -19,6 +19,20 @@ class RoomController extends Controller
             'owner_id' => auth()->id()
         ]);
 
-        return $room;
+        return redirect()->back();
+    }
+
+    public function delete(Int $room_id) {
+
+        $room = Room::find($room_id);
+
+        if (!$room) { 
+            
+            return redirect()->back()->with('error', 'Room not found');
+        }
+
+        $room->delete();
+
+        return redirect()->back();
     }
 }

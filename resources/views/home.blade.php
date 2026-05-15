@@ -10,7 +10,7 @@
     <h2>Criar sala de reunião</h2>
     <div class="room-form">
 
-        <form action="{{ route('room.create') }}" method="POST">
+        <form action="{{ route('room.store') }}" method="POST">
 
             @csrf
 
@@ -30,11 +30,20 @@
 
     </div>
 
-    <div class="rooms-list">
+    <input type="text" name="search-room" placeholder="Search a room">
 
+    <div class="rooms-list">
+        
         @foreach ($rooms as $room)
-            <a href="#">{{ $room->name }}</a>
+            <a href="#">{{ $room->name }}</a><form action="{{ route('room.delete', $room->id) }}" method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"> X </button>
+            </form>
         @endforeach
+
     </div>
 
     <script>
@@ -42,6 +51,7 @@
             const privateRadio = document.getElementById('private');
             const publicRadio = document.getElementById('public');
             const passwordField = document.getElementById('password');
+
 
             function togglePasswordField() {
 
@@ -58,6 +68,20 @@
             
             privateRadio.checked = 'true'
             togglePasswordField();
+
+
+
+            document.querySelector('input[name="search-room"]').addEventListener('input', function() {
+
+                const query = this.value.toLowerCase().trim();
+                const rooms = document.querySelectorAll('.rooms-list a');
+
+                rooms.forEach(room => {
+
+                    const name = room.textContent.toLowerCase();
+                    room.style.display = (query === '' || name.includes(query)) ? '' : 'none';
+                });
+            });
         });
     </script>
 </body>
