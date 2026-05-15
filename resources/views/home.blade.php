@@ -30,20 +30,43 @@
 
     </div>
 
+    <h2>Join Room</h2>
+    <form action="{{ route('room.join') }}" method="POST">
+
+        @csrf
+
+        <input type="text" name="name" placeholder="Room's name">
+        <input type="password" name="password" placeholder="password">
+
+        <button type="submit">Join</button>
+    </form>
+
+    <h2>My rooms</h2>
     <input type="text" name="search-room" placeholder="Search a room">
 
+    <h2>Private Rooms</h2>
+
     <div class="rooms-list">
-        
-        @foreach ($rooms as $room)
-            <a href="#">{{ $room->name }}</a><form action="{{ route('room.delete', $room->id) }}" method="POST">
+        @foreach ($myRooms as $room)
+            <div class="room-item" data-room-name="{{ strtolower($room->name) }}">
+                <a href="{{ route('room.index', $room) }}">
+                    {{ $room->name }}
+                </a>
 
-                @csrf
-                @method('DELETE')
-
-                <button type="submit"> X </button>
-            </form>
+            </div>
         @endforeach
+    </div>
 
+    <h2>Public Rooms</h2>
+
+    <div class="rooms-list">
+        @foreach ($publicRooms as $room)
+            <div class="room-item" data-room-name="{{ strtolower($room->name) }}">
+                <a href="{{ route('room.index', $room) }}">
+                    {{ $room->name }}
+                </a>
+            </div>
+        @endforeach
     </div>
 
     <script>
@@ -71,17 +94,23 @@
 
 
 
-            document.querySelector('input[name="search-room"]').addEventListener('input', function() {
 
-                const query = this.value.toLowerCase().trim();
-                const rooms = document.querySelectorAll('.rooms-list a');
+            const searchInput = document.querySelector('input[name="search-room"]');
 
-                rooms.forEach(room => {
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const query = this.value.toLowerCase().trim();
+                    const rooms = document.querySelectorAll('.room-item');
 
-                    const name = room.textContent.toLowerCase();
-                    room.style.display = (query === '' || name.includes(query)) ? '' : 'none';
+                    rooms.forEach(room => {
+                        const name = room.dataset.roomName || room.textContent.toLowerCase();
+
+                        room.style.display = query === '' || name.includes(query)
+                            ? ''
+                            : 'none';
+                    });
                 });
-            });
+            }
         });
     </script>
 </body>

@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
+
 class HomeController extends Controller
 {
-    public function home_view(){
+    public function home_view()
+    {
+        $publicRooms = Room::where('type', 'public')->latest()->get();
 
-        $rooms = auth()->user()->rooms()->latest()->get();
+        $myRooms = auth()->user()
+            ->rooms()
+            ->latest()
+            ->get();
 
-        return view('home', compact('rooms'));
+        return view('home', compact('publicRooms', 'myRooms'));
     }
 }

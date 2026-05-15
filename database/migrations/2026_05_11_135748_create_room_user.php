@@ -13,12 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('room_user', function (Blueprint $table){
+        Schema::create('room_user', function (Blueprint $table) {
+            $table->id();
 
-            $table->id('room_id');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->timestamp('joined_at');
-            $table->timestamp('last_read_at');
+            $table->foreignId('room_id')
+                ->constrained('rooms')
+                ->onDelete('cascade');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+
+            $table->timestamp('joined_at')->nullable();
+            $table->timestamp('last_read_at')->nullable();
+
+            $table->timestamps();
+
+            $table->unique(['room_id', 'user_id']);
         });
     }
 

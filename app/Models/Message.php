@@ -3,17 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
+        'room_id',
+        'user_id',
         'body',
+        'edited_at',
     ];
 
-    protected function casts(): array
+    public function room()
     {
-        return [
-            'body' => 'string'
-        ];
+        return $this->belongsTo(Room::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

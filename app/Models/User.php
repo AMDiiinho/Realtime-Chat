@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Room;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -16,10 +18,17 @@ class User extends Authenticatable
         return $this->hasMany(Room::class, 'owner_id');
     }
 
+    public function myRooms() {
 
+        return $this->belongsToMany(Room::class, 'room_user', 'user_id', 'room_id')
+            ->withPivot(['joined_at', 'last_read_at'])
+            ->withTimestamps();    
+    }
+
+    use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -20,10 +19,14 @@ class LoginController extends Controller
 
     public function auth(Request $request) {
 
-        if (Auth::attempt($request->only('username', 'password'))) {
-
-            return redirect()->intended('home');
+        // tenta logar com sessão
+        if (! Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            return back()->withErrors(['message' => 'Credenciais inválidas']);
         }
+
+        $request->session()->regenerate(); // segurança contra session fixation
+
+        return redirect()->intended('/home');
     }
     
 }
